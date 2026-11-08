@@ -2,7 +2,7 @@
 
 export type NodeKind = 'phone' | 'node' | 'gateway' | 'internet' | 'server' | 'router'
 
-export type LinkKind = 'wifi' | 'mesh-l2' | 'babel-l3' | 'uplink' | 'ethernet'
+export type LinkKind = 'wifi' | 'mesh-l2' | 'babel-l3' | 'uplink' | 'ethernet' | 'relation'
 
 export type PacketKind =
   | 'dhcp-request'

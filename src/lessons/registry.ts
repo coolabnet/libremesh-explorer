@@ -1,6 +1,7 @@
 import type { Lesson } from './types'
 import { clientToInternet } from './client-to-internet'
 import { networkInterfaces } from './network-interfaces'
+import { whyLibreMesh } from './why-libremesh'
 
 // Lições futuras ficam aqui, já listadas na home com "Em breve".
 const upcoming = (order: number, id: string, title: string, blurb: string): Lesson => ({
@@ -15,6 +16,7 @@ const upcoming = (order: number, id: string, title: string, blurb: string): Less
 })
 
 export const lessons: Lesson[] = [
+  whyLibreMesh,
   clientToInternet,
   networkInterfaces,
   upcoming(

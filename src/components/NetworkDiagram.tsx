@@ -17,10 +17,12 @@ const LINK_COLOR: Record<LinkKind, string> = {
   'babel-l3': 'var(--c-l3)',
   uplink: 'var(--c-up)',
   ethernet: 'var(--c-eth)',
+  relation: 'var(--c-rel)',
 }
 
 const LINK_DASH: Partial<Record<LinkKind, string>> = {
   'babel-l3': '7 7',
+  relation: '6 6',
 }
 
 const PACKET_COLOR: Record<PacketKind, string> = {
