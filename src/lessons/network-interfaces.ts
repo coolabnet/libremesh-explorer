@@ -39,7 +39,7 @@ export const networkInterfaces: Lesson = {
       title: 'O que é uma interface?',
       basic: [
         '“Interface de rede” é o nome técnico de qualquer porta por onde os dados entram e saem de um equipamento. Num roteador, algumas você consegue ver e tocar; outras são invisíveis, criadas por software.',
-        'Olhe o roteador do diagrama: as entradas de cabo atrás são as portas físicas com fio (LAN e WAN). As antenas representam os rádios — as interfaces wireless (wlan0 e wlan1).',
+        'Olhe o roteador do diagrama: as entradas de cabo são as portas físicas com fio — as LAN (em cinza, para os aparelhos da casa) e a WAN (em verde, a saída para a internet). As antenas representam os rádios — as interfaces wireless (wlan0 e wlan1).',
         'Além delas, o próprio sistema cria interfaces virtuais — você nunca as vê fisicamente, mas são elas que fazem a rede mesh funcionar.',
       ],
       advanced: [
@@ -67,7 +67,8 @@ export const networkInterfaces: Lesson = {
       },
       legend: [
         { swatch: 'var(--c-wifi)', label: 'interface wireless (rádio wlan0)' },
-        { swatch: 'var(--c-eth)', label: 'interface física com fio (porta LAN)' },
+        { swatch: 'var(--c-eth)', label: 'porta LAN (cinza) — aparelhos da casa' },
+        { swatch: 'var(--accent)', label: 'porta WAN (verde) — saída para a internet' },
         { swatch: 'var(--c-l2)', label: 'interface mesh (wlan0-mesh)' },
       ],
     },

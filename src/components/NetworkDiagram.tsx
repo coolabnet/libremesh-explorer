@@ -205,7 +205,12 @@ function RouterNode({ node }: { node: NodeSpec }) {
               rx={3}
               className={isWan ? 'router-port router-port-wan' : 'router-port'}
             />
-            <text x={cx} y={44} className="router-port-label" textAnchor="middle">
+            <text
+              x={cx}
+              y={44}
+              className={isWan ? 'router-port-label router-port-label-wan' : 'router-port-label'}
+              textAnchor="middle"
+            >
               {p}
             </text>
           </g>

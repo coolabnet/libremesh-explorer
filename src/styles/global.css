@@ -503,8 +503,13 @@ h3 {
 }
 
 .router-port-wan {
-  fill: var(--accent-soft);
-  stroke: var(--accent);
+  fill: var(--accent);
+  stroke: var(--accent-strong);
+}
+
+.router-port-label-wan {
+  fill: var(--accent-strong);
+  font-weight: 700;
 }
 
 .router-port-label {
