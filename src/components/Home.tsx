@@ -59,6 +59,12 @@ export default function Home({
           </a>
           .
         </p>
+        <p className="home-footer-love">
+          Feito com <span className="heart">💚</span> pela{' '}
+          <a href="https://www.coolab.org/" target="_blank" rel="noreferrer">
+            Coolab
+          </a>
+        </p>
       </footer>
     </div>
   )

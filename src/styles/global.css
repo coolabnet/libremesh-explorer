@@ -19,6 +19,7 @@
   --c-l2: #12b76a;
   --c-l3: #7c3aed;
   --c-up: #f59e0b;
+  --c-eth: #64748b;
   --c-dhcp-req: #06b6d4;
   --c-dhcp-resp: #10b981;
   --c-data: #2563eb;
@@ -229,6 +230,17 @@ h3 {
   text-align: center;
   color: var(--muted);
   font-size: 14px;
+}
+
+.home-footer-love {
+  margin-top: 10px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.heart {
+  display: inline-block;
+  animation: heartbeat 1.6s ease-in-out infinite;
 }
 
 /* ---------------------------------------------------------------- lesson */
@@ -577,6 +589,22 @@ h3 {
 @keyframes dashflow {
   to {
     stroke-dashoffset: -28;
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.25);
+  }
+  30% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.15);
   }
 }
 

@@ -16,6 +16,7 @@ const LINK_COLOR: Record<LinkKind, string> = {
   'mesh-l2': 'var(--c-l2)',
   'babel-l3': 'var(--c-l3)',
   uplink: 'var(--c-up)',
+  ethernet: 'var(--c-eth)',
 }
 
 const LINK_DASH: Partial<Record<LinkKind, string>> = {
