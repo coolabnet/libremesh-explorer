@@ -1,6 +1,6 @@
 // Tipos que descrevem as lições e os diagramas animados do explorador.
 
-export type NodeKind = 'phone' | 'node' | 'gateway' | 'internet' | 'server'
+export type NodeKind = 'phone' | 'node' | 'gateway' | 'internet' | 'server' | 'router'
 
 export type LinkKind = 'wifi' | 'mesh-l2' | 'babel-l3' | 'uplink' | 'ethernet'
 

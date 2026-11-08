@@ -162,7 +162,69 @@ function NodeGlyph({ kind }: { kind: NodeKind }) {
 
 // ---------------------------------------------------------------- nó
 
+function RouterNode({ node }: { node: NodeSpec }) {
+  const W = 176
+  const H = 64
+  const ports = ['LAN1', 'LAN2', 'LAN3', 'LAN4', 'WAN']
+  const pw = 22
+  const gap = 8
+  const start = -(ports.length * pw + (ports.length - 1) * gap) / 2 + pw / 2
+  return (
+    <g transform={`translate(${node.x}, ${node.y})`}>
+      <line x1={-44} y1={-H / 2} x2={-52} y2={-H / 2 - 34} className="router-ant" />
+      <circle cx={-52} cy={-H / 2 - 36} r={3.2} className="router-ant-tip" />
+      <text x={-52} y={-H / 2 - 44} className="router-port-label" textAnchor="middle">
+        wlan0
+      </text>
+      <line x1={44} y1={-H / 2} x2={52} y2={-H / 2 - 34} className="router-ant" />
+      <circle cx={52} cy={-H / 2 - 36} r={3.2} className="router-ant-tip" />
+      <text x={52} y={-H / 2 - 44} className="router-port-label" textAnchor="middle">
+        wlan1
+      </text>
+      {node.emphasis && (
+        <rect
+          x={-W / 2 - 8}
+          y={-H / 2 - 8}
+          width={W + 16}
+          height={H + 16}
+          rx={14}
+          className="router-emphasis"
+        />
+      )}
+      <rect x={-W / 2} y={-H / 2} width={W} height={H} rx={10} className="router-body" />
+      {ports.map((p, i) => {
+        const cx = start + i * (pw + gap)
+        const isWan = p === 'WAN'
+        return (
+          <g key={p}>
+            <rect
+              x={cx - pw / 2}
+              y={10}
+              width={pw}
+              height={14}
+              rx={3}
+              className={isWan ? 'router-port router-port-wan' : 'router-port'}
+            />
+            <text x={cx} y={44} className="router-port-label" textAnchor="middle">
+              {p}
+            </text>
+          </g>
+        )
+      })}
+      <text y={64} className="node-label" textAnchor="middle">
+        {node.label}
+      </text>
+      {node.sub && (
+        <text y={80} className="node-sub" textAnchor="middle">
+          {node.sub}
+        </text>
+      )}
+    </g>
+  )
+}
+
 function DiagramNode({ node }: { node: NodeSpec }) {
+  if (node.kind === 'router') return <RouterNode node={node} />
   return (
     <g transform={`translate(${node.x}, ${node.y})`}>
       {node.emphasis && <circle r={30} className="node-pulse" />}

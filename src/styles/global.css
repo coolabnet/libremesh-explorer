@@ -481,6 +481,46 @@ h3 {
   font-size: 12px;
 }
 
+.router-body {
+  fill: var(--node-bg);
+  stroke: var(--node-stroke);
+  stroke-width: 1.8;
+}
+
+.router-ant {
+  stroke: var(--node-ink);
+  stroke-width: 1.8;
+}
+
+.router-ant-tip {
+  fill: var(--node-ink);
+}
+
+.router-port {
+  fill: var(--bg-elevated);
+  stroke: var(--node-stroke);
+  stroke-width: 1.2;
+}
+
+.router-port-wan {
+  fill: var(--accent-soft);
+  stroke: var(--accent);
+}
+
+.router-port-label {
+  fill: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.router-emphasis {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  opacity: 0;
+  animation: node-pulse 2.2s ease-out infinite;
+}
+
 .link {
   stroke-width: 2.4;
   opacity: 0.9;

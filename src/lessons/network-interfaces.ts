@@ -33,46 +33,86 @@ export const networkInterfaces: Lesson = {
     'Um nó LibreMesh é uma pilha de interfaces: rádios Wi-Fi, portas com fio, interfaces mesh 802.11s, o AP dos clientes e os overlays batman-adv e Babel. Veja como tudo se encaixa.',
   available: true,
   steps: [
-    // ------------------------------------------------------------ 1
+    // ------------------------------------------------------------ 1 (novo)
     {
-      id: 'no-por-dentro',
-      title: 'O nó por dentro (físico)',
+      id: 'o-que-e-interface',
+      title: 'O que é uma interface?',
       basic: [
-        'Um nó LibreMesh é, na prática, um roteador com OpenWrt e o LibreMesh por cima. Por dentro, ele tem dois tipos de “porta” física: os rádios Wi-Fi (wlan0, wlan1…) e as portas de rede com fio (lan1, lan2…, wan).',
-        'Cada rádio consegue trabalhar em mais de um modo ao mesmo tempo: atender clientes (modo AP) e conversar com outros nós (modo mesh). As portas ethernet ligam computadores, switches ou a saída para a internet.',
-        'No diagrama, o mesmo nó atende um celular pelo Wi-Fi, fala com um vizinho pelo rádio mesh e está ligado a um computador por cabo.',
+        '“Interface de rede” é o nome técnico de qualquer porta por onde os dados entram e saem de um equipamento. Num roteador, algumas você consegue ver e tocar; outras são invisíveis, criadas por software.',
+        'Olhe o roteador do diagrama: as entradas de cabo atrás são as portas físicas com fio (LAN e WAN). As antenas representam os rádios — as interfaces wireless (wlan0 e wlan1).',
+        'Além delas, o próprio sistema cria interfaces virtuais — você nunca as vê fisicamente, mas são elas que fazem a rede mesh funcionar.',
       ],
       advanced: [
         {
-          title: 'Detecção automática',
+          title: 'No Linux, tudo é interface',
           paragraphs: [
-            'Os rádios são encontrados pelo módulo “wireless” do lime-config, que gera a configuração de cada rádio presente no aparelho. As portas ethernet são descobertas pelo módulo “network”.',
-            'O pacote lime-hwd-openwrt-wan trata a porta “wan” como saída para a internet. Se ele não estiver instalado (ou estiver desativado), essa porta vira mais uma LAN.',
+            'No Linux (base do OpenWrt), cada interface tem um nome — eth0, wlan0, br-lan… Você lista todas com o comando “ip link”.',
+            'Uma porta física pode abrigar várias interfaces virtuais ao mesmo tempo: o rádio wlan0, por exemplo, carrega o wlan0-ap e o wlan0-mesh.',
           ],
         },
       ],
       diagram: {
         nodes: [
-          { id: 'phone', x: 90, y: 200, kind: 'phone', label: 'Celular', sub: 'cliente' },
-          { id: 'node', x: 380, y: 320, kind: 'node', label: 'Seu nó', sub: 'OpenWrt + LibreMesh', emphasis: true },
-          { id: 'neighbor', x: 700, y: 180, kind: 'node', label: 'Nó vizinho', sub: 'via rádio mesh' },
-          { id: 'laptop', x: 700, y: 480, kind: 'node', label: 'Computador', sub: 'via cabo' },
+          { id: 'phone', x: 150, y: 160, kind: 'phone', label: 'Celular', sub: 'sem fio' },
+          { id: 'laptop', x: 150, y: 470, kind: 'node', label: 'Computador', sub: 'com cabo' },
+          { id: 'router', x: 480, y: 300, kind: 'router', label: 'Seu roteador', sub: 'portas + rádios + virtuais', emphasis: true },
+          { id: 'neighbor', x: 790, y: 180, kind: 'node', label: 'Nó vizinho', sub: 'via rádio mesh' },
         ],
         links: [
-          link('l1', 'phone', 'node', 'wifi', 'wlan0-ap'),
-          link('l2', 'node', 'neighbor', 'mesh-l2', 'wlan0-mesh'),
-          link('l3', 'node', 'laptop', 'ethernet', 'lan'),
+          link('l1', 'phone', 'router', 'wifi', 'wlan0 (rádio)'),
+          link('l2', 'laptop', 'router', 'ethernet', 'porta LAN'),
+          link('l3', 'router', 'neighbor', 'mesh-l2', 'wlan0-mesh'),
         ],
-        packets: [pkt('p1', ['phone', 'node', 'neighbor'], 'data', { label: 'dados', hopMs: 900 })],
+        packets: [pkt('p1', ['phone', 'router', 'neighbor'], 'data', { label: 'dados', hopMs: 900 })],
       },
       legend: [
-        { swatch: 'var(--c-wifi)', label: 'rádio em modo AP (clientes)' },
-        { swatch: 'var(--c-l2)', label: 'rádio em modo mesh (nós)' },
-        { swatch: 'var(--c-eth)', label: 'porta com fio (ethernet)' },
+        { swatch: 'var(--c-wifi)', label: 'interface wireless (rádio wlan0)' },
+        { swatch: 'var(--c-eth)', label: 'interface física com fio (porta LAN)' },
+        { swatch: 'var(--c-l2)', label: 'interface mesh (wlan0-mesh)' },
       ],
     },
 
-    // ------------------------------------------------------------ 2
+    // ------------------------------------------------------------ 2 (novo)
+    {
+      id: 'fisicas-wireless-virtuais',
+      title: 'Físicas, wireless e virtuais',
+      basic: [
+        'Podemos dividir as interfaces de um nó em três famílias:',
+        'Físicas (com fio): as portas ethernet — LAN (para computadores e switch) e WAN (para a internet).',
+        'Wireless (rádio): wlan0 e wlan1, as duas bandas (2,4 GHz e 5 GHz) ligadas às antenas.',
+        'Virtuais (software): criadas pelo sistema em cima das anteriores — wlan0-ap, wlan0-mesh, bat0, br-lan…',
+      ],
+      advanced: [
+        {
+          title: 'O que “virtual” significa aqui',
+          paragraphs: [
+            'Uma interface virtual não existe fisicamente: o software “fatia” um rádio em vários usos (as VAPs, como wlan0-ap e wlan0-mesh) ou “junta” várias interfaces (bridges como br-lan, ou o bat0 do batman-adv).',
+            'Por isso, um único rádio wlan0 aparece ao mesmo tempo como wlan0-ap, wlan0-mesh e ainda alimenta o bat0.',
+          ],
+        },
+      ],
+      diagram: {
+        nodes: [
+          { id: 'lan', x: 120, y: 200, kind: 'server', label: 'LAN', sub: 'lan1–4 · com fio' },
+          { id: 'wan', x: 120, y: 420, kind: 'server', label: 'WAN', sub: 'wan · internet' },
+          { id: 'wlan0', x: 400, y: 200, kind: 'node', label: 'wlan0', sub: '2,4 GHz' },
+          { id: 'wlan1', x: 400, y: 420, kind: 'node', label: 'wlan1', sub: '5 GHz' },
+          { id: 'ap', x: 700, y: 130, kind: 'server', label: 'wlan0-ap', sub: 'AP dos clientes' },
+          { id: 'mesh', x: 700, y: 260, kind: 'server', label: 'wlan0-mesh', sub: 'mesh 802.11s' },
+          { id: 'bat0', x: 700, y: 390, kind: 'server', label: 'bat0', sub: 'batman-adv' },
+          { id: 'brlan', x: 700, y: 510, kind: 'server', label: 'br-lan', sub: 'ponte local' },
+        ],
+        links: [],
+        clouds: [
+          { id: 'c1', nodeIds: ['lan', 'wan'], label: 'Físicas' } as CloudSpec,
+          { id: 'c2', nodeIds: ['wlan0', 'wlan1'], label: 'Wireless' } as CloudSpec,
+          { id: 'c3', nodeIds: ['ap', 'mesh', 'bat0', 'brlan'], label: 'Virtuais' } as CloudSpec,
+        ],
+        packets: [],
+      },
+    },
+
+    // ------------------------------------------------------------ 3
     {
       id: 'esquema-de-nomes',
       title: 'O esquema de nomes',
@@ -111,7 +151,7 @@ export const networkInterfaces: Lesson = {
       ],
     },
 
-    // ------------------------------------------------------------ 3
+    // ------------------------------------------------------------ 4
     {
       id: 'interfaces-mesh',
       title: 'As interfaces mesh (802.11s)',
@@ -150,7 +190,7 @@ export const networkInterfaces: Lesson = {
       legend: [{ swatch: 'var(--c-l2)', label: 'enlace de rádio mesh (802.11s)' }],
     },
 
-    // ------------------------------------------------------------ 4
+    // ------------------------------------------------------------ 5
     {
       id: 'ap-dos-clientes',
       title: 'O AP para os clientes',
@@ -186,7 +226,7 @@ export const networkInterfaces: Lesson = {
       ],
     },
 
-    // ------------------------------------------------------------ 5
+    // ------------------------------------------------------------ 6
     {
       id: 'bat0-e-babel',
       title: 'batman-adv (bat0) e Babel por cima',
@@ -242,7 +282,7 @@ export const networkInterfaces: Lesson = {
       ],
     },
 
-    // ------------------------------------------------------------ 6
+    // ------------------------------------------------------------ 7
     {
       id: 'br-lan-e-anygw',
       title: 'br-lan, anygw e a zona LAN',
